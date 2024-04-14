@@ -9,7 +9,7 @@ public class HttpFeature : Feature, IDisposable
 {
     private HttpClient _client;
     private HttpRequestMessage _request;
-    private HttpResponseMessage _result;
+    internal HttpResponseMessage _result;
 
     public HttpFeature()
     {

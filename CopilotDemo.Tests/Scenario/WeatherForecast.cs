@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Xunit.Gherkin.Quick;
 
 namespace CopilotDemo.Tests.Scenario;

@@ -1,0 +1,126 @@
+remember the following: given the following swagger definition of an API:
+```
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "CopilotDemo, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "version": "1.0"
+  },
+  "paths": {
+    "/weatherforecast": {
+      "get": {
+        "tags": [
+          "CopilotDemo, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        ],
+        "operationId": "GetWeatherForecast",
+        "parameters": [
+          {
+            "name": "hours",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "X-REGION",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "WeatherForecast": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "temperatureC": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          },
+          "temperatureF": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
+```
+
+For the `/weatherforecast` path located inside of the paths array of swagger defined above we generate
+the following feature file (called WeatherForcast.feature):
+
+```
+Feature: WeatherForecast
+  In order to know what the weather will be
+  As a user of the application
+  I want to call this API and retrieve my forecast
+  
+Scenario: I make a valid http request
+  Given I create a GET request to the endpoint with 12 as the hours
+  And I set the header X-REGION to be Perth
+  When The request is sent
+  Then the status code returned should be 200
+```
+
+and also a backing feature class (called WeatherForcast.cs)
+
+```
+using System.Text.Json;
+using Xunit.Gherkin.Quick;
+
+namespace CopilotDemo.Tests.Scenario;
+
+[FeatureFile("./Scenario/WeatherForecast.feature")]
+public class WeatherForecast : HttpFeature
+{
+    [Given(@"I create a (\w+) request to the endpoint with (\d+) as the hours")]
+    public void I_create_http_request_to_endpoint_with_hours(string statusCode, int hours)
+    {
+        SetHttpRequestMessage(ParseStatusCode(statusCode), CreateRequestUri(hours));
+    }
+ 
+    private string CreateRequestUri(int hours)
+    {
+        return $"/weatherforecast?hours={hours}";
+    }
+}
+```

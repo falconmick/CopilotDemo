@@ -32,6 +32,9 @@
       <None Update="Scenario\WeatherForecast.feature">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Scenario\GetPokemon.feature">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

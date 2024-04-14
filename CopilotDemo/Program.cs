@@ -1,3 +1,4 @@
+using CopilotDemo;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +34,16 @@ app.MapGet("/weatherforecast", Results<Ok<WeatherForecast[]>, BadRequest> (
         return TypedResults.Ok(forecast);
     })
     .WithName("GetWeatherForecast")
+    .WithOpenApi();
+
+app.MapGet("/getpokemon", Results<Ok<string[]>, NotFound> (
+        [FromQuery(Name = "generation")]int generation) =>
+    {
+        if (generation < 0 || generation > 4) { return TypedResults.NotFound(); }
+        
+        return TypedResults.Ok(new string[] { "Pikachu", "Charmander", "Squirtle", "Bulbasaur" });
+    })
+    .WithName("GetPokemon")
     .WithOpenApi();
 
 app.Run();

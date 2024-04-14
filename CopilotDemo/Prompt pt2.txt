@@ -1,0 +1,1 @@
+Given the following openapi.json file referenced, generate an equivalent WeatherForecast.feature file and backing class as shown in the prior example but for the `/getpokemon` path. Finally remind me that I need to set the new feature file to copy on build
