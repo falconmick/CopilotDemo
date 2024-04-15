@@ -1,7 +1,7 @@
 Feature: WeatherForecast
   In order to know what the weather will be
   As a user of the application
-  I want to call this API and retrieve my forecast
+  I want to call this API and retrieve what I can expect in the coming days
   
 Scenario: I make a valid http request
   Given I create a GET request to the endpoint with 12 as the hours
